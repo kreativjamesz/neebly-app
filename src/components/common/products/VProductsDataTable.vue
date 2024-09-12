@@ -1,0 +1,68 @@
+<template>
+  <v-data-table-server
+    v-model:items-per-page="itemsPerPage"
+    :headers="headers"
+    :items="productStore.products"
+    :items-length="totalItems"
+    :loading="loading"
+    @update:options="loadItems"
+  >
+    <template #headers>
+      <tr>
+        <th v-for="header in headers" :key="header.value">
+          {{ header.text }}
+        </th>
+      </tr>
+    </template>
+    <template #item.actions="{ item }">
+      <v-icon class="me-2" size="small" @click="editItem(item)"> mdi-pencil </v-icon>
+      <v-icon size="small" @click="deleteItem(item.id)"> mdi-delete </v-icon>
+    </template>
+  </v-data-table-server>
+  <v-modal-dialog
+    v-model="editDialog"
+    @confirm="handleConfirm"
+    title="Edit product"
+    :modal-content="markRaw(VProductForm)"
+    :modal-content-props="{ product: selectedProduct }"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useProductStore } from "@/stores/products";
+import { InternalDataTableHeader, Product, ProductTableParams } from "@/types";
+import VProductForm from "./VProductForm.vue";
+
+const editDialog = ref(false);
+const productStore = useProductStore();
+const itemsPerPage = ref(10);
+const selectedProduct = ref<Product | null>(null);
+
+const headers = ref<InternalDataTableHeader[]>([
+  { text: "Title", value: "title" },
+  { text: "Price", value: "price" },
+  { text: "Actions", value: "actions" },
+]);
+
+const totalItems = computed(() => productStore.totalItems);
+const loading = computed(() => productStore.loading);
+
+function loadItems({ page, itemsPerPage }: ProductTableParams) {
+  const offset = (page - 1) * itemsPerPage;
+  productStore.fetchProducts({ offset, limit: itemsPerPage });
+}
+
+function deleteItem(id: Product["id"]) {
+  productStore.deleteProduct(id);
+}
+
+function editItem(item: Product) {
+  selectedProduct.value = { ...item };
+  editDialog.value = true;
+}
+
+function handleConfirm() {
+  editDialog.value = false;
+}
+</script>
