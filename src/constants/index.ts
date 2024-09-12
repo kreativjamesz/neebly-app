@@ -10,6 +10,11 @@ export const sidebarMainMenu = [
     path: '/products',
   },
   {
+    name: 'Categories',
+    icon: 'mdi-format-list-bulleted',
+    path: '/categories',
+  },
+  {
     name: 'Users',
     icon: 'mdi-account',
     path: '/users',

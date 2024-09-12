@@ -1,12 +1,8 @@
+import { Category } from "./categories"
+
 export interface ProductTableParams {
   page: number
   itemsPerPage: number
-}
-
-export interface Category {
-  id: number
-  name: string
-  image: string
 }
 
 export interface Product {

@@ -14,6 +14,7 @@
             v-if="isComponent(modalContent)"
             v-bind="modalContentProps"
             @submit="emitConfirm"
+            ref="modalContentRef"
           ></component>
           <div v-else>{{ modalContent }}</div>
         </v-card-text>
@@ -23,7 +24,7 @@
             variant="flat"
             color="primary"
             class="text-capitalize"
-            @click="emitConfirm"
+            @click="submitForm"
             >{{ "Okay" }}</v-btn
           >
           <v-btn
@@ -58,6 +59,15 @@ const isComponent = (content: any) => {
 };
 // How set default title?
 const emit = defineEmits(["update:modelValue", "emit-confirm"]);
+
+const modalContentRef = ref();
+
+const submitForm = () => {
+  // Call the submitForm method from the form component
+  if (modalContentRef.value?.submitForm) {
+    modalContentRef.value.submitForm();
+  }
+}
 
 const emitConfirm = () => {
   emit("emit-confirm");

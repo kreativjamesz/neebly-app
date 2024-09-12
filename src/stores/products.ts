@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia'
 import ApiService from '@/services/api'
 import { Product, ProductStoreState } from '@/types'
+import { AxiosResponse } from 'axios';
+
+interface CustomAxiosResponse<T = any> extends AxiosResponse<T> {
+  total: number;
+}
 
 export const useProductStore = defineStore('products', {
   state: (): ProductStoreState => ({
@@ -25,7 +30,7 @@ export const useProductStore = defineStore('products', {
 
       try {
         // API call with pagination (offset and limit)
-        const response = await ApiService.get(
+        const response: any = await ApiService.get(
           `/products?offset=${offset}&limit=${limit}`,
         )
 
@@ -37,6 +42,7 @@ export const useProductStore = defineStore('products', {
         }
 
         // Update totalItems if the API provides a total count (if not, manually handle it)
+        // Count the reponse or set int o100
         this.totalItems = response.total || 100 // Example fallback
 
         // Update offset for next pagination

@@ -1,10 +1,14 @@
 <template>
   <div class="products pa-6">
     <v-card class="pa-3" elevation="1" max-width="100%">
-      <v-card-title class="d-flex justify-space-between align-center">
+      <v-card-title>
         <h2>Products</h2>
-        <v-add-product />
       </v-card-title>
+      <v-card-text class="d-flex justify-space-between align-center py-0">
+        <v-search-product />
+        <v-add-product />
+      </v-card-text>
+      <v-divider />
       <v-card-text>
         <v-products-data-table />
       </v-card-text>

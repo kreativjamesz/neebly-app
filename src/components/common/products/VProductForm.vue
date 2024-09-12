@@ -1,8 +1,7 @@
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submitForm">
     <v-text-field
       v-model="form.title"
-      :counter="10"
       :error-messages="name.errorMessage.value"
       label="Name"
     ></v-text-field>
@@ -12,6 +11,7 @@
       :counter="7"
       :error-messages="price.errorMessage.value"
       label="Price"
+      type="number"
     ></v-text-field>
 
     <v-textarea
@@ -26,7 +26,6 @@
       :items="items"
       label="Category"
     ></v-select>
-    {{ props.product.category }}
   </form>
 </template>
 
@@ -48,7 +47,7 @@ const props = defineProps({
       category: "",
     }),
   },
-})
+});
 
 const form = ref({
   title: props.product.title || "",
@@ -69,12 +68,18 @@ const selectCategory = useField("selectCategory");
 
 const items = ref(["Item 1", "Item 2", "Item 3", "Item 4"]);
 
-const submit = () => {
+const submitForm = () => {
+  console.log('form', form.value)
   emit("submit", {
-    name: name.value.value,
-    price: price.value.value,
-    description: description.value.value,
-    category: selectCategory.value.value,
+    ...form.value,
   });
 };
+
+const exposedConst = {
+  submitForm,
+  handleReset,
+  form,
+};
+
+defineExpose(exposedConst);
 </script>

@@ -21,7 +21,7 @@
   </v-data-table-server>
   <v-modal-dialog
     v-model="editDialog"
-    @confirm="handleConfirm"
+    @emit-confirm="handleConfirm"
     title="Edit product"
     :modal-content="markRaw(VProductForm)"
     :modal-content-props="{ product: selectedProduct }"
@@ -35,9 +35,13 @@ import { InternalDataTableHeader, Product, ProductTableParams } from "@/types";
 import VProductForm from "./VProductForm.vue";
 
 const editDialog = ref(false);
-const productStore = useProductStore();
 const itemsPerPage = ref(10);
 const selectedProduct = ref<Product | null>(null);
+const productStore = useProductStore();
+
+console.log('productStore', productStore.products)
+const totalItems = computed(() => productStore.totalItems);
+const loading = computed(() => productStore.loading);
 
 const headers = ref<InternalDataTableHeader[]>([
   { text: "Title", value: "title" },
@@ -45,23 +49,24 @@ const headers = ref<InternalDataTableHeader[]>([
   { text: "Actions", value: "actions" },
 ]);
 
-const totalItems = computed(() => productStore.totalItems);
-const loading = computed(() => productStore.loading);
-
+// Load products...
 function loadItems({ page, itemsPerPage }: ProductTableParams) {
   const offset = (page - 1) * itemsPerPage;
   productStore.fetchProducts({ offset, limit: itemsPerPage });
 }
 
+// Delete product...
 function deleteItem(id: Product["id"]) {
   productStore.deleteProduct(id);
 }
 
+// Edit product using edit dialog...
 function editItem(item: Product) {
   selectedProduct.value = { ...item };
   editDialog.value = true;
 }
 
+// Saving and update product record...
 function handleConfirm() {
   editDialog.value = false;
 }
