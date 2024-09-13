@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <v-form ref="productFormRef" @submit.prevent="submitForm">
     <v-text-field
       v-model="form.title"
       :error-messages="name.errorMessage.value"
@@ -30,7 +30,7 @@
       mandatory
     ></v-select>
     <pre>{{ form }}</pre>
-  </form>
+  </v-form>
 </template>
 
 <script setup>
@@ -56,45 +56,61 @@ const categoryItems = computed(() =>
 
 const emit = defineEmits(["submit"]);
 
-// Define Form
+// From Validation using Vee-Validate
 const { handleSubmit, handleReset } = useForm({
   validationSchema,
 });
-
-// Define Fields
 const name = useField("name");
 const price = useField("price");
 const description = useField("description");
 const selectCategory = useField("selectCategory");
 
-function loadItems() {
-  categoryStore.fetchCategories();
-}
-
-// Determine if we are in "edit" mode based on the presence of an ID
+// Computed
 const isEditMode = computed(() => productStore.updateProductForm.id !== 0);
-
-// Initialize form with store values
-// Reactive form for create/update
 const form = computed(() => {
-  // If in edit mode, use updateProductForm, otherwise use createProductForm
   return isEditMode.value
     ? productStore.updateProductForm
     : productStore.createProductForm;
 });
 
+// OnMounted Lifecycle Hook
 onMounted(() => {
   loadItems();
   console.log("form", form.value);
 });
 
+// Methods
+function loadItems() {
+  categoryStore.fetchCategories();
+}
 const submitForm = () => {
   emit("submit", {
     ...form.value,
   });
 };
+const validate = async () => {
+  // name.value.validate();
+  // price.value.validate();
+  // description.value.validate();
+  // selectCategory.value.validate();
+  const { valid } = await this.$refs.productFormRef.validate();
+  return valid;
+};
 
+const reset = () => {
+  this.$refs.productFormRef.reset();
+};
+
+const resetValidation = () => {
+  this.$refs.productFormRef.resetValidation();
+  if (this.isEditMode) {
+    this.$emit("cancel");
+  }
+};
+
+// Exposed Constants
 const exposedConst = {
+  validate,
   submitForm,
   handleReset,
   form,

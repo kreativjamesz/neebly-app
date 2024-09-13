@@ -22,17 +22,17 @@
         <v-card-actions class="pa-6">
           <v-btn
             variant="flat"
-            color="primary"
+            color="success"
             class="text-capitalize"
             @click="submitForm"
-            >{{ "Okay" }}</v-btn
+            >{{ confirmText }}</v-btn
           >
           <v-btn
-            variant="flat"
+            variant="outlined"
             color="orange"
             class="text-capitalize"
             @click="cancelForm"
-            >{{ "Cancel" }}</v-btn
+            >{{ cancelText }}</v-btn
           >
         </v-card-actions>
       </template>
@@ -46,11 +46,15 @@ const props = withDefaults(
     modelValue: boolean;
     title: string;
     modalContent: Component | string;
-    modalContentProps?: Record<string, any>; // Optional prop
+    modalContentProps?: Record<string, any>;
+    confirmText?: string;
+    cancelText?: string;
   }>(),
   {
     title: "Default Title", // Default title
     modalContentProps: () => ({}),
+    confirmText: "Confirm",
+    cancelText: "Cancel",
   }
 );
 

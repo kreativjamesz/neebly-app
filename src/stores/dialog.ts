@@ -7,8 +7,8 @@ export interface Dialog {
   dialogContent?: string | Component
   confirmText: string
   cancelText: string
-  confirm: () => void
-  cancel: () => void
+  confirm?: () => void
+  cancel?: () => void
   actionsComponent?: Component
 }
 

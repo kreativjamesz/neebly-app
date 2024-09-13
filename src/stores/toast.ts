@@ -6,6 +6,7 @@ export interface Toast {
 	type: "success" | "alert",
 	title: string,
 	message: string,
+	timeout?: number,
 	toastContent?: string,
 	closeToast: () => void
 }

@@ -1,7 +1,10 @@
 <template>
   <v-app>
-    <v-system-bar color="primary">
-      <span class="font-weight-bold">This is a public announcement</span>
+    <v-system-bar color="red">
+      <marquee
+        >[ANNOUNCEMENT]. Please read it carefully. Please contact your
+        administrator or I.T.S.M. if you have any questions regarding this application. Thank You.</marquee
+      >
       <v-icon>mdi-close</v-icon>
     </v-system-bar>
     <v-main-navigation-drawer />
@@ -13,6 +16,8 @@
     <v-main-dialog />
     <!-- Toast -->
     <v-main-toast />
+    <!-- Confirm -->
+    <v-main-confirmation />
     <!-- Footer -->
     <v-app-footer />
   </v-app>

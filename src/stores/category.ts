@@ -17,7 +17,6 @@ export const useCategoryStore = defineStore('categories', {
 			try {
 				const response: AxiosResponse<Category[]> = await ApiService.get('/categories')
 				this.categories = response.data
-				console.log("🚀 ~ fetchCategories ~ this.categories:", this.categories)
 			} catch (error) {
 				this.error = 'Failed to fetch categories'
 			} finally {

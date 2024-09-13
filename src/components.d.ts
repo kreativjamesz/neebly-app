@@ -31,6 +31,7 @@ declare module 'vue' {
     VAppFooter: typeof import('./components/VAppFooter.vue')['default']
     VCategoriesDataTable: typeof import('./components/common/categories/VCategoriesDataTable.vue')['default']
     VConfirmationDialog: typeof import('./components/common/dialogs/VConfirmationDialog.vue')['default']
+    VMainConfirmation: typeof import('./components/common/VMainConfirmation.vue')['default']
     VMainDialog: typeof import('./components/common/dialogs/VMainDialog.vue')['default']
     VMainNavigationBar: typeof import('./components/common/VMainNavigationBar.vue')['default']
     VMainNavigationDrawer: typeof import('./components/common/VMainNavigationDrawer.vue')['default']
