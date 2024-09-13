@@ -31,7 +31,7 @@
             variant="flat"
             color="orange"
             class="text-capitalize"
-            @click="dialog = false"
+            @click="cancelForm"
             >{{ "Cancel" }}</v-btn
           >
         </v-card-actions>
@@ -58,7 +58,7 @@ const isComponent = (content: any) => {
   return typeof content !== "string";
 };
 // How set default title?
-const emit = defineEmits(["update:modelValue", "emit-confirm"]);
+const emit = defineEmits(["update:modelValue", "emit-confirm", "cancel"]);
 
 const modalContentRef = ref();
 
@@ -67,7 +67,12 @@ const submitForm = () => {
   if (modalContentRef.value?.submitForm) {
     modalContentRef.value.submitForm();
   }
-}
+};
+
+const cancelForm = () => {
+  emit("cancel");
+  dialog.value = false;
+};
 
 const emitConfirm = () => {
   emit("emit-confirm");

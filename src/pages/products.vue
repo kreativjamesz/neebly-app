@@ -8,7 +8,6 @@
         <v-search-product />
         <v-add-product />
       </v-card-text>
-      <v-divider />
       <v-card-text>
         <v-products-data-table />
       </v-card-text>

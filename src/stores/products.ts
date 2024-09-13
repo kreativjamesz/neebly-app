@@ -1,20 +1,28 @@
 import { defineStore } from 'pinia'
 import ApiService from '@/services/api'
-import { Product, ProductStoreState } from '@/types'
-import { AxiosResponse } from 'axios';
-
-interface CustomAxiosResponse<T = any> extends AxiosResponse<T> {
-  total: number;
-}
+import { InputCreateProduct, InputUpdateProduct, Product, ProductStoreState } from '@/types'
 
 export const useProductStore = defineStore('products', {
-  state: (): ProductStoreState => ({
+  state: () => ({
     products: [] as Product[],
     totalItems: 0,
     loading: false,
     error: null,
     offset: 0,
     limit: 10, // Default limit
+    createProductForm: {
+      title: '',
+      price: 0,
+      description: '',
+      categoryId: 0
+    } as InputCreateProduct,
+    updateProductForm: {
+      id: 0,
+      title: '',
+      price: 0,
+      description: '',
+      categoryId: 0
+    } as InputUpdateProduct,
   }),
 
   actions: {
@@ -42,7 +50,7 @@ export const useProductStore = defineStore('products', {
         }
 
         // Update totalItems if the API provides a total count (if not, manually handle it)
-        // Count the reponse or set int o100
+        // Count the response or set int o100
         this.totalItems = response.total || 100 // Example fallback
 
         // Update offset for next pagination
@@ -53,22 +61,33 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
-
     resetPagination() {
       this.offset = 0
       this.products = []
     },
-    deleteProduct(id: Product['id']) {
-      this.products = this.products.filter((product) => product.id !== id)
+    /** Products Form */
+    setCreateProductDefaults(defaults: InputCreateProduct) {
+      this.createProductForm = defaults;
     },
-    addProduct(product: Product) {
-      this.products.push(product)
+    setUpdateProductDefaults(defaults: InputUpdateProduct) {
+      this.updateProductForm = defaults;
     },
-    updateProduct(product: Product) {
-      const index = this.products.findIndex((p) => p.id === product.id)
-      if (index !== -1) {
-        this.products[index] = product
-      }
+    resetCreateProductForm() {
+      this.createProductForm = {
+        title: '',
+        price: 0,
+        description: '',
+        categoryId: 0
+      };
     },
+    resetUpdateProductForm() {
+      this.updateProductForm = {
+        id: 0,
+        title: '',
+        price: 0,
+        description: '',
+        categoryId: 0
+      };
+    }
   },
 })

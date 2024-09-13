@@ -1,6 +1,8 @@
 <template>
+  <v-divider />
   <v-data-table-server
     v-model:items-per-page="itemsPerPage"
+    v-model:search="search"
     :headers="headers"
     :items="productStore.products"
     :items-length="totalItems"
@@ -25,6 +27,7 @@
     title="Edit product"
     :modal-content="markRaw(VProductForm)"
     :modal-content-props="{ product: selectedProduct }"
+    @cancel="handleCancel"
   />
 </template>
 
@@ -36,12 +39,14 @@ import VProductForm from "./VProductForm.vue";
 
 const editDialog = ref(false);
 const itemsPerPage = ref(10);
+const search = ref("");
 const selectedProduct = ref<Product | null>(null);
 const productStore = useProductStore();
 
-console.log('productStore', productStore.products)
+console.log("productStore", productStore.products);
 const totalItems = computed(() => productStore.totalItems);
 const loading = computed(() => productStore.loading);
+const isEditMode = computed(() => productStore.updateProductForm.id !== 0);
 
 const headers = ref<InternalDataTableHeader[]>([
   { text: "Title", value: "title" },
@@ -57,17 +62,30 @@ function loadItems({ page, itemsPerPage }: ProductTableParams) {
 
 // Delete product...
 function deleteItem(id: Product["id"]) {
-  productStore.deleteProduct(id);
+  console.log(" DELETING PRODUCT ", id);
 }
 
 // Edit product using edit dialog...
 function editItem(item: Product) {
   selectedProduct.value = { ...item };
+  const categoryId = item.category?.id || 0;
+  productStore.setUpdateProductDefaults({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    description: item.description,
+    categoryId: categoryId,
+  });
   editDialog.value = true;
 }
 
 // Saving and update product record...
 function handleConfirm() {
   editDialog.value = false;
+}
+
+function handleCancel() {
+  editDialog.value = false;
+  productStore.resetUpdateProductForm();
 }
 </script>

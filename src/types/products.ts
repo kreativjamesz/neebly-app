@@ -3,6 +3,7 @@ import { Category } from "./categories"
 export interface ProductTableParams {
   page: number
   itemsPerPage: number
+  search: string
 }
 
 export interface Product {
@@ -21,4 +22,19 @@ export interface ProductStoreState {
   error: string | null
   offset: number
   limit: number
+}
+
+export type InputCreateProduct = {
+  title: string
+  price: number
+  description: string
+  categoryId: number
+}
+
+export type InputUpdateProduct = {
+  id: number
+  title?: string
+  description?: string
+  price?: number
+  categoryId?: number
 }

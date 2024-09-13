@@ -5,38 +5,40 @@
     title="Add Product"
     :modal-content="markRaw(VProductForm)"
     @emit-confirm="onConfirm"
+    @cancel="onCancel"
   />
 </template>
 
 <script setup lang="ts">
 import { useDialogStore } from "@/stores/dialog";
 import VProductForm from "./VProductForm.vue";
+import { useProductStore } from "@/stores/products";
 
 const dialogStore = useDialogStore();
-
+const productStore = useProductStore();
 const showDialog = ref(false);
 
 const onConfirm = () => {
   console.log("Confirmed!");
   /*
-  dialogStore.openDialog({
-    title: 'Add Product',
-    messageContent: AddProductForm, // Passing component reference
-    confirmText: 'Add',
-    cancelText: 'Cancel',
-    confirm: () => {
-      // handle confirm action
-      console.log('Product added');
-    },
-    cancel: () => {
-      // handle cancel action
-      console.log('Action canceled');
-    },
-  });
+    dialogStore.openDialog({
+      title: 'Add Product',
+      messageContent: AddProductForm, // Passing component reference
+      confirmText: 'Add',
+      cancelText: 'Cancel',
+      confirm: () => {
+        // handle confirm action
+        console.log('Product added');
+      },
+      cancel: () => {
+        // handle cancel action
+        console.log('Action canceled');
+      },
+    });
   */
 };
 
 const onCancel = () => {
-  console.log("Cancelled!");
+  productStore.resetUpdateProductForm();
 };
 </script>
