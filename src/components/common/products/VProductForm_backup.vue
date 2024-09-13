@@ -3,12 +3,13 @@
     ref="productFormRef"
     @submit.prevent="submitForm"
     class="d-flex flex-column ga-5"
+    fast-fail
   >
     <v-text-field
       label="Name"
       v-model="form.title"
       variant="outlined"
-      :rules="nameRules"
+      :error-messages="name.errorMessage.value"
     />
 
     <v-text-field
@@ -17,14 +18,14 @@
       type="number"
       variant="outlined"
       :counter="7"
-      :rules="priceRules"
+      :error-messages="price.errorMessage.value"
     />
 
     <v-textarea
       v-model="form.description"
       label="Description"
       variant="outlined"
-      :rules="descRules"
+      :error-messages="description.errorMessage.value"
     />
 
     <v-select
@@ -34,8 +35,8 @@
       label="Category"
       variant="outlined"
       mandatory
+      :error-messages="categoryId.errorMessage.value"
       :items="categoryItems"
-      :rules="categoryIdRules"
     />
     <pre>{{ form }}</pre>
   </v-form>
@@ -49,22 +50,29 @@ import { validationSchema } from "@/lib/validation";
 import { useProductStore } from "@/stores/products";
 import { useCategoryStore } from "@/stores/category";
 
-// State
-const validation = validationSchema;
-const productFormRef = ref();
-const nameRules = [validation.required, validation.name];
-const priceRules = [validation.required, validation.price];
-const descRules = [validation.required, validation.description];
-const categoryIdRules = [validation.required, validation.categoryId];
-
 // Pinia Store
 const dialogStore = useDialogStore();
 const productStore = useProductStore();
 const categoryStore = useCategoryStore();
 const categories = computed(() => categoryStore.categories);
 
-// Emits
+const categoryItems = computed(() =>
+  categories.value.map((category) => ({
+    id: category.id,
+    name: category.name,
+  }))
+);
+
 const emit = defineEmits(["submit"]);
+
+// From Validation using Vee-Validate
+const { handleSubmit, handleReset } = useForm({
+  validationSchema,
+});
+const name = useField("name");
+const price = useField("price");
+const description = useField("description");
+const categoryId = useField("categoryId");
 
 // Computed
 const isEditMode = computed(() => productStore.updateProductForm.id !== 0);
@@ -73,14 +81,8 @@ const form = computed(() => {
     ? productStore.updateProductForm
     : productStore.createProductForm;
 });
-const categoryItems = computed(() =>
-  categories.value.map((category) => ({
-    id: category.id,
-    name: category.name,
-  }))
-);
 
-// Hooks
+// OnMounted Lifecycle Hook
 onMounted(() => {
   loadItems();
   console.log("form", form.value);
@@ -90,17 +92,37 @@ onMounted(() => {
 function loadItems() {
   categoryStore.fetchCategories();
 }
+const validate = async () => {
+  const { valid } = await this.$refs.productFormRef.validate();
+  return valid;
+};
+const reset = () => {
+  this.$refs.productFormRef.reset();
+};
+const submit = handleSubmit((values) => {
+  if (isEditMode.value) {
+    productStore.updateProduct(values);
+  } else {
+    productStore.createProduct(values);
+  }
+  emit("submit", values);
+  handleReset();
+  dialogStore.closeDialog();
+});
 
 const submitForm = () => {
-  productFormRef.value?.validate().then(({ valid: isValid }) => {
-    if (!isValid) return;
-    emit("submit", form.value);
-  });
+  submit();
+  // this.validate();
+  // emit("submit", {
+  //   ...form.value,
+  // });
 };
 
 // Exposed Constants
 const exposedConst = {
+  validate,
   submitForm,
+  handleReset,
   form,
 };
 

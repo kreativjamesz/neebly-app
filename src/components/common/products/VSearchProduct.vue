@@ -5,11 +5,14 @@
       density="compact"
       label="Search"
       prepend-inner-icon="mdi-magnify"
-      variant="solo-filled"
+      variant="outlined"
+      color="primary"
       flat
       hide-details
       single-line
 			min-width="300"
+      class="rounded-lg"
+      style="border: 1px solid #ffcc00 !important;"
     ></v-text-field>
   </div>
 </template>

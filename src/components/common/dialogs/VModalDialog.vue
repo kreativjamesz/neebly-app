@@ -22,15 +22,17 @@
         <v-card-actions class="pa-6">
           <v-btn
             variant="flat"
-            color="success"
+            color="primary"
             class="text-capitalize"
+            size="large"
             @click="submitForm"
             >{{ confirmText }}</v-btn
           >
           <v-btn
-            variant="outlined"
-            color="orange"
+            variant="flat"
+            color="black"
             class="text-capitalize"
+            size="large"
             @click="cancelForm"
             >{{ cancelText }}</v-btn
           >

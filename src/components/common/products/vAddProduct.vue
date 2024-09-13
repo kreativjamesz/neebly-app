@@ -1,10 +1,10 @@
 <template>
   <div class="actions d-flex ga-4">
-    <!-- <v-btn color="green" @click="showSuccessToast"> Show Toast </v-btn>
-    <v-btn color="red" @click="showErrorToast"> Show Toast </v-btn> -->
-    <v-btn color="green" @click="showSaveConfirmation"> Show Success </v-btn>
-    <v-btn color="orange" @click="showAlertConfirmation"> Show Alert </v-btn>
-    <v-btn color="red" @click="showDeleteConfirmation"> Show Error </v-btn>
+    <!-- <v-btn color="green" @click="showSuccessToast"> Show Toast </v-btn> -->
+    <!-- <v-btn color="red" @click="showErrorToast"> Show Toast </v-btn> -->
+    <!-- <v-btn color="green" @click="showSaveConfirmation"> Show Success </v-btn> -->
+    <!-- <v-btn color="orange" @click="showAlertConfirmation"> Show Alert </v-btn> -->
+    <!-- <v-btn color="red" @click="showDeleteConfirmation"> Show Error </v-btn> -->
     <v-btn color="primary" @click="showDialog = true"> Add product </v-btn>
   </div>
   <v-modal-dialog

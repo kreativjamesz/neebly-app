@@ -1,13 +1,10 @@
 <template>
   <v-navigation-drawer>
-    <v-list-item
-      title="NEEBLY"
-      subtitle="Vuetify"
-      min-height="64"
-      base-color="primary"
-    ></v-list-item>
+    <v-list-item class="bg-primary py-0 text-center" min-height="64" base-color="white">
+      <template #title> <span class="text-h2 font-weight-bold">NEEBLY</span> </template>
+    </v-list-item>
     <v-divider />
-    <v-list density="compact">
+    <v-list density="compact" color="primary" >
       <v-list-subheader class="font-weight-bold">Main Menu</v-list-subheader>
       <v-list-item
         link
@@ -43,11 +40,11 @@
               <v-list-item-title>
                 <span
                   v-if="employee.online"
-                  :style="{ color: isDark ? 'white' : 'green', fontWeight: 'bold' }"
+                  :style="{ color: isDark ? 'white' : 'primary', fontWeight: 'bold' }"
                 >
                   {{ employee.name }}</span
                 >
-                <span v-else style="color: gray"> {{ employee.name }} </span>
+                <span v-else style="color: grey"> {{ employee.name }} </span>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <span
@@ -64,11 +61,11 @@
           </div>
         </template>
         <template #append>
-          <v-list-item-subtitle v-if="employee.online" class="green--text">
-            <v-icon color="#00C853">mdi-circle</v-icon>
+          <v-list-item-subtitle v-if="employee.online" class="primary--text">
+            <v-icon color="primary">mdi-circle</v-icon>
           </v-list-item-subtitle>
           <v-list-item-subtitle v-else class="red--text">
-            <v-icon color="red">mdi-circle</v-icon>
+            <v-icon color="black">mdi-circle</v-icon>
           </v-list-item-subtitle>
         </template>
       </v-list-item>
