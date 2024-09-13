@@ -92,7 +92,7 @@ function editItem(item: Product) {
 
 // Saving and update product record...
 function handleConfirm() {
-  editDialog.value = false;
+  // editDialog.value = false;
 }
 
 function handleCancel() {

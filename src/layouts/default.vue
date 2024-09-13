@@ -9,8 +9,11 @@
     <v-main>
       <router-view />
     </v-main>
-    <!-- Reusable Dialog Component -->
+    <!-- Dialog -->
     <v-main-dialog />
+    <!-- Toast -->
+    <v-main-toast />
+    <!-- Footer -->
     <v-app-footer />
   </v-app>
 </template>

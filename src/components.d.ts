@@ -34,12 +34,14 @@ declare module 'vue' {
     VMainDialog: typeof import('./components/common/dialogs/VMainDialog.vue')['default']
     VMainNavigationBar: typeof import('./components/common/VMainNavigationBar.vue')['default']
     VMainNavigationDrawer: typeof import('./components/common/VMainNavigationDrawer.vue')['default']
+    VMainToast: typeof import('./components/common/VMainToast.vue')['default']
     VModalDialog: typeof import('./components/common/dialogs/VModalDialog.vue')['default']
     VProductForm: typeof import('./components/common/products/VProductForm.vue')['default']
     VProductsDataTable: typeof import('./components/common/products/VProductsDataTable.vue')['default']
     VSearchProduct: typeof import('./components/common/products/VSearchProduct.vue')['default']
     VThemedDialog: typeof import('./components/common/VThemedDialog.vue')['default']
     VThemeToggle: typeof import('./components/common/VThemeToggle.vue')['default']
+    VToast: typeof import('./components/common/VToast.vue')['default']
     VUserMenu: typeof import('./components/common/VUserMenu.vue')['default']
   }
 }
