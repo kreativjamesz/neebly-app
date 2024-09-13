@@ -1,6 +1,8 @@
 <template>
   <v-divider />
   <v-data-table-server
+    hover
+    class="cursor-pointer"
     v-model:items-per-page="itemsPerPage"
     v-model:search="search"
     :headers="headers"
@@ -8,8 +10,9 @@
     :items-length="totalItems"
     :loading="loading"
     @update:options="loadItems"
+    @click:row="showItem"
   >
-    <template #item.images="{ item }">
+    <!-- <template #item.images="{ item }">
       <img
         v-for="image in JSON.parse(item.images[0])"
         :src="image"
@@ -18,7 +21,7 @@
         style="display: flex !important"
         onerror="this.onerror = null; this.src='http://unsplash.it/g/150/150?random=' + Math.random()"
       />
-    </template>
+    </template> -->
     <template #headers>
       <tr>
         <th v-for="header in headers" :key="header.value">
@@ -33,13 +36,13 @@
   </v-data-table-server>
   <v-modal-dialog
     v-model="editDialog"
-    @emit-confirm="handleConfirmEdit"
     title="Edit Product"
     :modal-content="markRaw(VProductForm)"
     :modal-content-props="{ product: selectedProduct }"
-    @cancel="handleCancel"
     confirm-text="Update"
+    @emit-confirm="handleConfirmEdit"
     cancel-text="Cancel"
+    @cancel="handleCancel"
   />
 </template>
 
@@ -49,9 +52,11 @@ import { useProductStore } from "@/stores/products";
 import { useConfirmationStore } from "@/stores/confirmation";
 import { InternalDataTableHeader, Product, ProductTableParams } from "@/types";
 import VProductForm from "./VProductForm.vue";
+import VProductView from "./VProductView.vue";
 
 // Variables
 const editDialog = ref(false);
+const previewDialog = ref(false);
 const itemsPerPage = ref(10);
 const search = ref("");
 const selectedProduct = ref<Product | null>(null);
@@ -62,7 +67,7 @@ const totalItems = computed(() => productStore.totalItems);
 const loading = computed(() => productStore.loading);
 const headers = ref<InternalDataTableHeader[]>([
   { text: "ID", value: "id", width: "100px" },
-  { text: "Images", value: "images", width: "120px" },
+  // { text: "Images", value: "images", width: "120px" },
   { text: "Title", value: "title" },
   { text: "Price", value: "price" },
   { text: "Actions", value: "actions" },
@@ -120,7 +125,20 @@ function editItem(item: Product) {
 
 // Saving and update product record...
 function handleConfirmEdit() {
-  editDialog.value = false;
+  // editDialog.value = false;
+  confirmationStore.showConfirmation({
+    show: true,
+    type: "alert",
+    title: "Update Product",
+    text: "Are you sure you want to save this product?",
+    confirm: () => {
+      // editItem();
+      confirmationStore.closeConfirmation();
+    },
+    cancel: () => {
+      confirmationStore.closeConfirmation();
+    },
+  });
 }
 
 function handleCancel() {
@@ -131,5 +149,15 @@ function handleCancel() {
     return;
   }
   productStore.resetUpdateProductForm();
+}
+
+const showItem = (item: Product) => {
+  console.log("🚀 ~ showItem ~ item:", item)
+  selectedProduct.value = { ...item };
+  previewDialog.value = true;
+};
+
+function handleClose() {
+  confirmationStore.closeConfirmation();
 }
 </script>

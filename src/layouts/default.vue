@@ -2,10 +2,10 @@
   <v-app>
     <v-theme-provider>
       <v-system-bar color="#111111">
-        <marquee
-          >[ANNOUNCEMENT]. Please read it carefully. Please contact your
-          administrator or I.T.S.M. if you have any questions regarding this application. Thank You.</marquee
-        >
+        <v-marquee>
+          [ANNOUNCEMENT]. Please read it carefully. Please contact your administrator or
+          I.T.S.M. if you have any questions regarding this application. Thank You.
+        </v-marquee>
         <v-icon>mdi-close</v-icon>
       </v-system-bar>
       <v-main-navigation-drawer />

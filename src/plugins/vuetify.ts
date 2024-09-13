@@ -34,7 +34,7 @@ const dark = {
   dark: true,
   colors: {
     background: '#121212',
-    surface: '#121212',
+    surface: '#1a1a1a',
     'surface-bright': '#000000',
     'surface-light': '#222222',
     'surface-variant': '#424242',

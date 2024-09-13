@@ -13,4 +13,15 @@ export const useThemeStore = defineStore('theme', {
       this.isDark = isDark
     },
   },
+  getters: {
+    themeColor1: (state) => {
+      return state.isDark ? 'primary' : 'black'
+    },
+    themeColor2: (state) => {
+      return state.isDark ? 'black' : 'white'
+    },
+    themeColor3: (state) => {
+      return state.isDark ? 'black' : 'primary'
+    },
+  },
 })

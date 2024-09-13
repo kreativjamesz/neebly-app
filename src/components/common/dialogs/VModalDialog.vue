@@ -20,22 +20,8 @@
         </v-card-text>
         <v-divider />
         <v-card-actions class="pa-6">
-          <v-btn
-            variant="flat"
-            color="primary"
-            class="text-capitalize"
-            size="large"
-            @click="submitForm"
-            >{{ confirmText }}</v-btn
-          >
-          <v-btn
-            variant="flat"
-            color="black"
-            class="text-capitalize"
-            size="large"
-            @click="cancelForm"
-            >{{ cancelText }}</v-btn
-          >
+          <v-app-button @click="submitForm" :text="confirmText" />
+          <v-app-button @click="cancelForm" :text="cancelText" color="black" />
         </v-card-actions>
       </template>
     </v-card>
@@ -53,7 +39,7 @@ const props = withDefaults(
     cancelText?: string;
   }>(),
   {
-    title: "Default Title", // Default title
+    title: "Default Title",
     modalContentProps: () => ({}),
     confirmText: "Confirm",
     cancelText: "Cancel",

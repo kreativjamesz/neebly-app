@@ -8,12 +8,14 @@
 import vuetify from './vuetify'
 import pinia from '../stores'
 import router from '../router'
+import Vue3Marquee from 'vue3-marquee'
 
 // Types
 import type { App } from 'vue'
 
 export function registerPlugins (app: App) {
   app
+    .use(Vue3Marquee, { name: 'VMarquee' })
     .use(vuetify)
     .use(router)
     .use(pinia)

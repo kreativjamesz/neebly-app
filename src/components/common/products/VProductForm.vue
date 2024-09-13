@@ -37,7 +37,6 @@
       :items="categoryItems"
       :rules="categoryIdRules"
     />
-    <pre>{{ form }}</pre>
   </v-form>
 </template>
 
@@ -63,6 +62,13 @@ const productStore = useProductStore();
 const categoryStore = useCategoryStore();
 const categories = computed(() => categoryStore.categories);
 
+const categoryItems = computed(() =>
+  categories.value.map((category) => ({
+    id: category.id,
+    name: category.name,
+  }))
+);
+
 // Emits
 const emit = defineEmits(["submit"]);
 
@@ -73,12 +79,7 @@ const form = computed(() => {
     ? productStore.updateProductForm
     : productStore.createProductForm;
 });
-const categoryItems = computed(() =>
-  categories.value.map((category) => ({
-    id: category.id,
-    name: category.name,
-  }))
-);
+
 
 // Hooks
 onMounted(() => {

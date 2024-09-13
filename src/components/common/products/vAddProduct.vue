@@ -5,7 +5,7 @@
     <!-- <v-btn color="green" @click="showSaveConfirmation"> Show Success </v-btn> -->
     <!-- <v-btn color="orange" @click="showAlertConfirmation"> Show Alert </v-btn> -->
     <!-- <v-btn color="red" @click="showDeleteConfirmation"> Show Error </v-btn> -->
-    <v-btn color="primary" @click="showDialog = true"> Add product </v-btn>
+    <v-app-button @click="showDialog = true" text="+ Add product"/>
   </div>
   <v-modal-dialog
     v-model="showDialog"
@@ -29,9 +29,9 @@ const confirmationStore = useConfirmationStore();
 const showDialog = ref(false);
 
 /**
- * 
+ *
  * Create Product...
- * 
+ *
  */
 const onConfirm = () => {
   console.log("Confirmed!");
@@ -54,12 +54,12 @@ const showSaveConfirmation = () => {
       confirmationStore.closeConfirmation();
     },
   });
-}
+};
 
 /**
- * 
+ *
  * Update Product...
- * 
+ *
  */
 const showAlertConfirmation = () => {
   confirmationStore.showConfirmation({
@@ -75,12 +75,12 @@ const showAlertConfirmation = () => {
       confirmationStore.closeConfirmation();
     },
   });
-}
+};
 
 /**
- * 
+ *
  * Delete Product...
- * 
+ *
  */
 const showDeleteConfirmation = () => {
   confirmationStore.showConfirmation({
@@ -96,7 +96,7 @@ const showDeleteConfirmation = () => {
       confirmationStore.closeConfirmation();
     },
   });
-}
+};
 
 // const showSuccessToast = () => {
 //   toastStore.showToast({

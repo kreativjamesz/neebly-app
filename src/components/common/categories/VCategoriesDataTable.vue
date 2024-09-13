@@ -22,7 +22,7 @@
             :color="isDark ? '#454545' : '#eaeaea'"
             max-width="350"
             elevation="1"
-            v-for="(category, index) in categoryStore.categories"
+            v-for="(category) in categoryStore.categories"
             :key="category.id"
           >
             <v-card-text class="d-flex justify-center align-center">
@@ -38,7 +38,7 @@
                 class="image-container"
                 :style="{
                   width: '250px',
-                  height: '150px',
+                  height: '250px',
                   objectFit: 'fill',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',

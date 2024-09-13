@@ -1,7 +1,7 @@
 <template>
   <v-menu transition="slide-y-transition">
     <template v-slot:activator="{ props }">
-      <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props" />
+      <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props" :color="themeColor1"/>
     </template>
     <v-list>
       <v-list-item v-for="(item, index) in items" :key="index" :value="index">
@@ -15,6 +15,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useThemeStore } from "@/stores/theme";
+import { storeToRefs } from "pinia";
+const themeStore = useThemeStore();
+const { themeColor1 } = storeToRefs(themeStore);
+
 const items = [
   {
     id: 1,
