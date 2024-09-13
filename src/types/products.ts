@@ -22,13 +22,18 @@ export interface ProductStoreState {
   error: string | null
   offset: number
   limit: number
+  createProductForm: InputCreateProduct,
+  updateProductForm: InputUpdateProduct,
+  resetCreateProductForm: () => void,
+  resetUpdateProductForm: () => void,
 }
 
 export type InputCreateProduct = {
   title: string
   price: number
   description: string
-  categoryId: number
+  categoryId?: number | null
+  images?: string[]
 }
 
 export type InputUpdateProduct = {

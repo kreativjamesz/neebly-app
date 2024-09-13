@@ -14,7 +14,7 @@ export const useProductStore = defineStore('products', {
       title: '',
       price: 0,
       description: '',
-      categoryId: 0
+      categoryId: null
     } as InputCreateProduct,
     updateProductForm: {
       id: 0,
@@ -37,23 +37,15 @@ export const useProductStore = defineStore('products', {
       this.error = null
 
       try {
-        // API call with pagination (offset and limit)
         const response: any = await ApiService.get(
           `/products?offset=${offset}&limit=${limit}`,
         )
-
-        // Replace or append products based on the offset
         if (offset === 0) {
           this.products = response.data
         } else {
           this.products = [...this.products, ...response.data]
         }
-
-        // Update totalItems if the API provides a total count (if not, manually handle it)
-        // Count the response or set int o100
-        this.totalItems = response.total || 100 // Example fallback
-
-        // Update offset for next pagination
+        this.totalItems = response.total || 100
         this.offset = offset + limit
       } catch (error) {
         this.error = 'Failed to fetch products'
@@ -61,10 +53,50 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
+    async createProduct(this: ProductStoreState) {
+      this.loading = true
+      this.error = null
+      const form = {...this.createProductForm, images: ['http://unsplash.it/g/150/150?random']}
+      try {
+        const response = await ApiService.post('/products', form)
+        this.products = [...this.products, response.data]
+      } catch (error) {
+        this.error = 'Failed to create product'
+      } finally {
+        this.loading = false
+      }
+    },
+    async updateProduct(this: ProductStoreState) {
+      this.loading = true
+      this.error = null
+      try {
+        await ApiService.put(`/products/${this.updateProductForm.id}`, this.updateProductForm)
+      } catch (error) {
+        this.error = 'Failed to update product'
+      } finally {
+        this.loading = false
+        this.resetUpdateProductForm()
+      }
+    },
+    async deleteProduct(this: ProductStoreState, id: number) {
+      this.loading = true
+      this.error = null
+      try {
+        await ApiService.delete(`/products/${id}`)
+        this.products = this.products.filter((product) => product.id !== id)
+      } catch (error) {
+        this.error = 'Failed to delete product'
+      } finally {
+        this.loading = false
+      }
+    },
+
+    /** Pagination */
     resetPagination() {
       this.offset = 0
       this.products = []
     },
+    
     /** Products Form */
     setCreateProductDefaults(defaults: InputCreateProduct) {
       this.createProductForm = defaults;
@@ -77,7 +109,8 @@ export const useProductStore = defineStore('products', {
         title: '',
         price: 0,
         description: '',
-        categoryId: 0
+        categoryId: 0,
+        images: []
       };
     },
     resetUpdateProductForm() {

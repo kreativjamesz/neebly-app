@@ -9,6 +9,16 @@
     :loading="loading"
     @update:options="loadItems"
   >
+    <template #item.images="{ item }">
+      <img
+        v-for="image in JSON.parse(item.images[0])"
+        :src="image"
+        width="50"
+        height="50"
+        style="display: flex !important;"
+        onerror="this.onerror = null; this.src='http://unsplash.it/g/150/150?random=' + Math.random()"
+      />
+    </template>
     <template #headers>
       <tr>
         <th v-for="header in headers" :key="header.value">
@@ -46,9 +56,10 @@ const productStore = useProductStore();
 console.log("productStore", productStore.products);
 const totalItems = computed(() => productStore.totalItems);
 const loading = computed(() => productStore.loading);
-const isEditMode = computed(() => productStore.updateProductForm.id !== 0);
+// const isEditMode = computed(() => productStore.updateProductForm.id !== 0);
 
 const headers = ref<InternalDataTableHeader[]>([
+  { text: "Images", value: "images" },
   { text: "Title", value: "title" },
   { text: "Price", value: "price" },
   { text: "Actions", value: "actions" },
@@ -62,7 +73,7 @@ function loadItems({ page, itemsPerPage }: ProductTableParams) {
 
 // Delete product...
 function deleteItem(id: Product["id"]) {
-  console.log(" DELETING PRODUCT ", id);
+  productStore.deleteProduct(id);
 }
 
 // Edit product using edit dialog...
