@@ -22,7 +22,7 @@
             :color="isDark ? '#454545' : '#eaeaea'"
             max-width="350"
             elevation="1"
-            v-for="(category) in categoryStore.categories"
+            v-for="category in categoryStore.categories"
             :key="category.id"
           >
             <v-card-text class="d-flex justify-center align-center">
@@ -35,15 +35,18 @@
                 ></v-skeleton-loader>
               </div>
               <div
+                v-else
                 class="image-container"
                 :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   width: '250px',
                   height: '250px',
                   objectFit: 'fill',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                 }"
-                v-else
               >
                 <img
                   :src="

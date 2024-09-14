@@ -19,7 +19,8 @@
         </th>
       </tr>
     </template>
-    <!-- <template #body="{ items }">
+    <!--
+    <template #body="{ items }">
       <tr v-for="item in items" :key="item.id" @click="showItem(item)">
         <td>{{ item?.id || "N/A" }}</td>
         <td>{{ item?.title || "N/A" }}</td>
@@ -41,7 +42,8 @@
           </v-app-button>
         </td>
       </tr>
-    </template> -->
+    </template> 
+    -->
     <template #item.actions="{ item }">
       <v-app-button icon size="small" @click.stop="showItem(item)">
         <v-icon size="large">mdi-eye</v-icon>

@@ -41,6 +41,7 @@ declare module 'vue' {
     VModalDialog: typeof import('./components/common/dialogs/VModalDialog.vue')['default']
     VProductForm: typeof import('./components/common/products/VProductForm.vue')['default']
     VProductForm_backup: typeof import('./components/common/products/VProductForm_backup.vue')['default']
+    VProductsCardList: typeof import('./components/common/products/VProductsCardList.vue')['default']
     VProductsDataTable: typeof import('./components/common/products/VProductsDataTable.vue')['default']
     VProductView: typeof import('./components/common/products/VProductView.vue')['default']
     VSearchProduct: typeof import('./components/common/products/VSearchProduct.vue')['default']
