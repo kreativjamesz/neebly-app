@@ -84,7 +84,6 @@ const form = computed(() => {
 // Hooks
 onMounted(() => {
   loadItems();
-  console.log("form", form.value);
 });
 
 // Methods

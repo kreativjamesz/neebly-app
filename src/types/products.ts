@@ -43,3 +43,12 @@ export type InputUpdateProduct = {
   price?: number
   categoryId?: number
 }
+
+export type DefaultViewProduct = {
+  id: number
+  title: string
+  price: number
+  description: string
+  category: Category
+  images: string[]
+}

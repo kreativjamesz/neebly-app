@@ -23,6 +23,7 @@ export const useProductStore = defineStore('products', {
       description: '',
       categoryId: 0
     } as InputUpdateProduct,
+    selectedProduct: {} as Product
   }),
 
   actions: {
@@ -71,7 +72,10 @@ export const useProductStore = defineStore('products', {
       this.error = null
       try {
         const response = await ApiService.put(`/products/${this.updateProductForm.id}`, this.updateProductForm)
-        this.products = response.data
+        const index = this.products.findIndex((product) => product.id === response.data.id)
+        if (index !== -1) {
+          this.products[index] = response.data
+        }
       } catch (error) {
         this.error = 'Failed to update product'
       } finally {
@@ -105,6 +109,9 @@ export const useProductStore = defineStore('products', {
     setUpdateProductDefaults(defaults: InputUpdateProduct) {
       this.updateProductForm = defaults;
     },
+    setViewProductDetails(details: Product) {
+      this.selectedProduct = details
+    },
     resetCreateProductForm() {
       this.createProductForm = {
         title: '',
@@ -122,6 +129,9 @@ export const useProductStore = defineStore('products', {
         description: '',
         categoryId: 0
       };
+    },
+    resetViewProductDetails() {
+      this.selectedProduct = {} as Product
     }
   },
 })

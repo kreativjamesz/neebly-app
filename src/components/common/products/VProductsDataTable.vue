@@ -10,7 +10,7 @@
     :items-length="totalItems"
     :loading="loading"
     @update:options="loadItems"
-    @click:row="showItem"
+    @click:row="handleRowClick"
   >
     <template #headers>
       <tr>
@@ -19,7 +19,33 @@
         </th>
       </tr>
     </template>
+    <!-- <template #body="{ items }">
+      <tr v-for="item in items" :key="item.id" @click="showItem(item)">
+        <td>{{ item?.id || "N/A" }}</td>
+        <td>{{ item?.title || "N/A" }}</td>
+        <td>{{ item?.price || "N/A" }}</td>
+        <td>
+          <v-app-button class="mx-1" icon size="small" @click.stop="showItem(item)">
+            <v-icon size="large">mdi-eye</v-icon>
+          </v-app-button>
+          <v-app-button class="mx-1" icon size="small" @click.stop="editItem(item)">
+            <v-icon size="large"> mdi-pencil </v-icon>
+          </v-app-button>
+          <v-app-button
+            class="mx-1"
+            icon
+            size="small"
+            @click.stop="deleteConfirmation(item.id)"
+          >
+            <v-icon size="large"> mdi-delete </v-icon>
+          </v-app-button>
+        </td>
+      </tr>
+    </template> -->
     <template #item.actions="{ item }">
+      <v-app-button icon size="small" @click.stop="showItem(item)">
+        <v-icon size="large">mdi-eye</v-icon>
+      </v-app-button>
       <v-app-button icon size="small" @click.stop="editItem(item)">
         <v-icon size="large"> mdi-pencil </v-icon>
       </v-app-button>
@@ -34,8 +60,8 @@
     :title="computedDialogState"
     :modal-content="computedDialogStateToComponent"
     :modal-content-props="{ product: selectedProduct }"
-    confirm-text="Update"
-    @emit-confirm="handleConfirmEdit"
+    :confirm-text="computedConfirmText"
+    @emit-confirm="computedConfirm"
     cancel-text="Cancel"
     @cancel="handleCancel"
   />
@@ -76,7 +102,7 @@ const computedDialogState = computed(() => {
     case "add":
       return "Add Product";
     case "view":
-      return "View Product";
+      return "";
     case "edit":
       return "Edit Product";
     default:
@@ -93,6 +119,28 @@ const computedDialogStateToComponent = computed<string | Component>(() => {
       return markRaw(VProductView);
     default:
       return "";
+  }
+});
+
+const computedConfirmText = computed(() => {
+  switch (dialogState.value) {
+    case "add":
+      return "Add";
+    case "edit":
+      return "Update";
+    default:
+      return "Confirm";
+  }
+});
+
+const computedConfirm = computed(() => {
+  switch (dialogState.value) {
+    case "add":
+      return handleConfirmEdit;
+    case "edit":
+      return handleConfirmEdit;
+    default:
+      return handleCancel;
   }
 });
 
@@ -202,6 +250,24 @@ function handleCancel() {
 const showItem = (item: Product) => {
   dialogState.value = "view";
   selectedProduct.value = { ...item };
+  productStore.setViewProductDetails({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    description: item.description,
+    category: item.category,
+    images: item.images,
+  });
   showDialog.value = true;
 };
+
+const handleRowClick = (row: any) => {
+  console.log(row.value);
+};
 </script>
+
+<style lang="scss" scoped>
+.rounded-full {
+  border-radius: 9999px;
+}
+</style>

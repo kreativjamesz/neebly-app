@@ -1,11 +1,20 @@
 // Import Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;700;900&display=swap');
+// Import Lato Google Font
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
 
 // Define custom SASS variables
-$body-font-family: 'Raleway', sans-serif !default;
-$font-size-root: .75rem !default;
+$raleway-font-family: 'Raleway', sans-serif !default;
+$lato-font-family: 'Lato', sans-serif !default;
+
+$body-font-family: $lato-font-family !default;
+$font-size-root: 1rem !default;
 
 body {
   font-family: $body-font-family;
   font-size: $font-size-root;
+}
+
+.rounded-full {
+  border-radius: 9999px;
 }
