@@ -1,11 +1,6 @@
 <template>
   <div class="actions d-flex ga-4">
-    <!-- <v-btn color="green" @click="showSuccessToast"> Show Toast </v-btn> -->
-    <!-- <v-btn color="red" @click="showErrorToast"> Show Toast </v-btn> -->
-    <!-- <v-btn color="green" @click="showSaveConfirmation"> Show Success </v-btn> -->
-    <!-- <v-btn color="orange" @click="showAlertConfirmation"> Show Alert </v-btn> -->
-    <!-- <v-btn color="red" @click="showDeleteConfirmation"> Show Error </v-btn> -->
-    <v-app-button @click="showDialog = true" text="+ Add product"/>
+    <v-app-button @click="showDialog = true" text="+ Add product" />
   </div>
   <v-modal-dialog
     v-model="showDialog"
@@ -20,12 +15,13 @@
 
 <script setup lang="ts">
 import VProductForm from "./VProductForm.vue";
-// import { useToastStore } from "@/stores/toast";
 import { useProductStore } from "@/stores/products";
 import { useConfirmationStore } from "@/stores/confirmation";
+import { useToastStore } from "@/stores/toast";
 
 const productStore = useProductStore();
 const confirmationStore = useConfirmationStore();
+const toastStore = useToastStore();
 const showDialog = ref(false);
 
 /**
@@ -48,6 +44,7 @@ const showSaveConfirmation = () => {
     confirm: () => {
       onConfirm();
       confirmationStore.closeConfirmation();
+      showSuccessToast();
     },
     cancel: () => {
       console.log("Cancelled!");
@@ -56,70 +53,20 @@ const showSaveConfirmation = () => {
   });
 };
 
-/**
- *
- * Update Product...
- *
- */
-const showAlertConfirmation = () => {
-  confirmationStore.showConfirmation({
+const showSuccessToast = () => {
+  toastStore.showToast({
     show: true,
-    type: "alert",
-    title: "Are you sure?",
-    text: "Are you sure you want to update this product?",
-    confirm: () => {
-      onConfirm();
-    },
-    cancel: () => {
-      console.log("Cancelled!");
-      confirmationStore.closeConfirmation();
+    type: "success",
+    title: "Test Toast",
+    message: "Successfully created product!",
+    closeToast: () => {
+      toastStore.closeToast(0);
     },
   });
 };
-
 /**
- *
- * Delete Product...
- *
+ * ************************END*CREATE***********************************
  */
-const showDeleteConfirmation = () => {
-  confirmationStore.showConfirmation({
-    show: true,
-    type: "error",
-    title: "Save Product",
-    text: "Are you sure you want to save this product?",
-    confirm: () => {
-      onConfirm();
-    },
-    cancel: () => {
-      console.log("Cancelled!");
-      confirmationStore.closeConfirmation();
-    },
-  });
-};
-
-// const showSuccessToast = () => {
-//   toastStore.showToast({
-//     show: true,
-//     type: "success",
-//     title: "Test Toast",
-//     message: "This is a test toast",
-//     closeToast: () => {
-//       toastStore.closeToast(0);
-//     },
-//   });
-// };
-// const showErrorToast = () => {
-//   toastStore.showToast({
-//     show: true,
-//     type: "alert",
-//     title: "Test Toast",
-//     message: "This is a test toast",
-//     closeToast: () => {
-//       toastStore.closeToast(0);
-//     },
-//   });
-// };
 
 const onCancel = () => {
   productStore.resetUpdateProductForm();

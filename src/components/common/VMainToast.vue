@@ -33,7 +33,7 @@ const toastStore = useToastStore();
 const toasts = computed(() => toastStore.toasts);
 const toastHeight = 80;
 const toastMargin = 10;
-const toastTimeout = 500;
+const toastTimeout = 3000;
 
 // Computed
 const isOpen = computed(() => {

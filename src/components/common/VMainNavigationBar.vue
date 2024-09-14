@@ -1,7 +1,7 @@
 <template>
-  <v-app-bar :elevation="1" class="shadow-lg">
+  <v-app-bar :elevation="1" class="shadow-lg px-2">
     <template #prepend>
-      <div class="pl-2">
+      <div>
         <v-btn icon @click="toggleRail">
           <v-app-bar-nav-icon :color="themeColor1" />
         </v-btn>

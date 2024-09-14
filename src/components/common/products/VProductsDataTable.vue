@@ -12,16 +12,6 @@
     @update:options="loadItems"
     @click:row="showItem"
   >
-    <!-- <template #item.images="{ item }">
-      <img
-        v-for="image in JSON.parse(item.images[0])"
-        :src="image"
-        width="50"
-        height="50"
-        style="display: flex !important"
-        onerror="this.onerror = null; this.src='http://unsplash.it/g/150/150?random=' + Math.random()"
-      />
-    </template> -->
     <template #headers>
       <tr>
         <th v-for="header in headers" :key="header.value">
@@ -123,22 +113,28 @@ function editItem(item: Product) {
   editDialog.value = true;
 }
 
-// Saving and update product record...
+// Update confirmation for edit item
 function handleConfirmEdit() {
-  // editDialog.value = false;
   confirmationStore.showConfirmation({
     show: true,
     type: "alert",
     title: "Update Product",
-    text: "Are you sure you want to save this product?",
+    text: "Are you sure you want to update this product?",
     confirm: () => {
-      // editItem();
+      proceedEditItem();
       confirmationStore.closeConfirmation();
     },
     cancel: () => {
       confirmationStore.closeConfirmation();
     },
   });
+}
+
+// Proceed updating product
+function proceedEditItem() {
+  productStore.updateProduct();
+  productStore.resetUpdateProductForm();
+  editDialog.value = false;
 }
 
 function handleCancel() {

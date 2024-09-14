@@ -101,6 +101,7 @@ const submitForm = () => {
 
 // Exposed Constants
 const exposedConst = {
+  productFormRef,
   submitForm,
   form,
 };

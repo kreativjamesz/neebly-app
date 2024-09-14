@@ -70,7 +70,8 @@ export const useProductStore = defineStore('products', {
       this.loading = true
       this.error = null
       try {
-        await ApiService.put(`/products/${this.updateProductForm.id}`, this.updateProductForm)
+        const response = await ApiService.put(`/products/${this.updateProductForm.id}`, this.updateProductForm)
+        this.products = response.data
       } catch (error) {
         this.error = 'Failed to update product'
       } finally {
