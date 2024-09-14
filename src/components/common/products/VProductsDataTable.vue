@@ -20,14 +20,19 @@
       </tr>
     </template>
     <template #item.actions="{ item }">
-      <v-icon class="me-2" size="small" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon size="small" @click="showDeleteConfirmation(item.id)"> mdi-delete </v-icon>
+      <v-app-button icon size="small" @click.stop="editItem(item)">
+        <v-icon size="large"> mdi-pencil </v-icon>
+      </v-app-button>
+      <v-app-button icon size="small" @click.stop="deleteConfirmation(item.id)">
+        <v-icon size="large"> mdi-delete </v-icon>
+      </v-app-button>
     </template>
   </v-data-table-server>
   <v-modal-dialog
-    v-model="editDialog"
-    title="Edit Product"
-    :modal-content="markRaw(VProductForm)"
+    v-model="showDialog"
+    :state="dialogState"
+    :title="computedDialogState"
+    :modal-content="computedDialogStateToComponent"
     :modal-content-props="{ product: selectedProduct }"
     confirm-text="Update"
     @emit-confirm="handleConfirmEdit"
@@ -43,25 +48,53 @@ import { useConfirmationStore } from "@/stores/confirmation";
 import { InternalDataTableHeader, Product, ProductTableParams } from "@/types";
 import VProductForm from "./VProductForm.vue";
 import VProductView from "./VProductView.vue";
+import { useToastStore } from "@/stores/toast";
+import { DialogState } from "@/types/dialog";
 
 // Variables
-const editDialog = ref(false);
-const previewDialog = ref(false);
+const dialogState = ref("" as DialogState);
+const showDialog = ref(false);
 const itemsPerPage = ref(10);
 const search = ref("");
 const selectedProduct = ref<Product | null>(null);
 const productStore = useProductStore();
 const confirmationStore = useConfirmationStore();
+const toastStore = useToastStore();
 
 const totalItems = computed(() => productStore.totalItems);
 const loading = computed(() => productStore.loading);
 const headers = ref<InternalDataTableHeader[]>([
   { text: "ID", value: "id", width: "100px" },
-  // { text: "Images", value: "images", width: "120px" },
   { text: "Title", value: "title" },
   { text: "Price", value: "price" },
   { text: "Actions", value: "actions" },
 ]);
+
+// Computed
+const computedDialogState = computed(() => {
+  switch (dialogState.value) {
+    case "add":
+      return "Add Product";
+    case "view":
+      return "View Product";
+    case "edit":
+      return "Edit Product";
+    default:
+      return "Product";
+  }
+});
+
+const computedDialogStateToComponent = computed<string | Component>(() => {
+  switch (dialogState.value) {
+    case "add":
+    case "edit":
+      return markRaw(VProductForm);
+    case "view":
+      return markRaw(VProductView);
+    default:
+      return "";
+  }
+});
 
 // Load products...
 function loadItems({ page, itemsPerPage }: ProductTableParams) {
@@ -78,7 +111,7 @@ function deleteItem(id: Product["id"]) {
   console.log("Confirmed!");
   productStore.deleteProduct(id);
 }
-const showDeleteConfirmation = (id: Product["id"]) => {
+const deleteConfirmation = (id: Product["id"]) => {
   confirmationStore.showConfirmation({
     show: true,
     type: "error",
@@ -97,10 +130,11 @@ const showDeleteConfirmation = (id: Product["id"]) => {
 
 /**
  *
- * Edit product using edit dialog...
+ ** 1. Edit product using edit dialog...
  *
  **/
 function editItem(item: Product) {
+  dialogState.value = "edit";
   selectedProduct.value = { ...item };
   const categoryId = item.category?.id || 0;
   productStore.setUpdateProductDefaults({
@@ -110,10 +144,10 @@ function editItem(item: Product) {
     description: item.description,
     categoryId: categoryId,
   });
-  editDialog.value = true;
+  showDialog.value = true;
 }
 
-// Update confirmation for edit item
+// 2. Update confirmation for edit item  */
 function handleConfirmEdit() {
   confirmationStore.showConfirmation({
     show: true,
@@ -130,12 +164,30 @@ function handleConfirmEdit() {
   });
 }
 
-// Proceed updating product
+// 3. Proceed updating product  */
 function proceedEditItem() {
   productStore.updateProduct();
   productStore.resetUpdateProductForm();
-  editDialog.value = false;
+  showDialog.value = false;
+  showSuccessToast();
 }
+
+// 4. Show Toast on success */
+function showSuccessToast() {
+  toastStore.showToast({
+    show: true,
+    type: "success",
+    title: "Test Toast",
+    message: "Successfully updated product!",
+    closeToast: () => {
+      toastStore.closeToast(0);
+    },
+  });
+}
+
+/**
+ ** ************************END*UPDATE**************************
+ */
 
 function handleCancel() {
   if (
@@ -148,12 +200,8 @@ function handleCancel() {
 }
 
 const showItem = (item: Product) => {
-  console.log("🚀 ~ showItem ~ item:", item)
+  dialogState.value = "view";
   selectedProduct.value = { ...item };
-  previewDialog.value = true;
+  showDialog.value = true;
 };
-
-function handleClose() {
-  confirmationStore.closeConfirmation();
-}
 </script>

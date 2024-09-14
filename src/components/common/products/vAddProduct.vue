@@ -25,9 +25,7 @@ const toastStore = useToastStore();
 const showDialog = ref(false);
 
 /**
- *
  * Create Product...
- *
  */
 const onConfirm = () => {
   console.log("Confirmed!");

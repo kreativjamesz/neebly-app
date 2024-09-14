@@ -1,16 +1,7 @@
 // stores/dialogStore.ts
+import { Dialog } from '@/types/dialog'
 import { defineStore } from 'pinia'
-import { Component, ref } from 'vue'
-
-export interface Dialog {
-  title: string
-  dialogContent?: string | Component
-  confirmText: string
-  cancelText: string
-  confirm?: () => void
-  cancel?: () => void
-  actionsComponent?: Component
-}
+import { ref } from 'vue'
 
 export const useDialogStore = defineStore('dialog', () => {
   // Store an array of dialogs
