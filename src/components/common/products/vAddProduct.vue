@@ -1,6 +1,12 @@
 <template>
   <div class="actions d-flex ga-4">
-    <v-app-button @click="showDialog = true" text="+ Add product" />
+    <v-app-button
+      @click="showDialog = true"
+      :icon="isTablet"
+      :size="isTablet ? 'small' : 'large'"
+    >
+      <v-icon>mdi-plus</v-icon> <span v-if="!isTablet">Add Product</span>
+    </v-app-button>
   </div>
   <v-modal-dialog
     v-model="showDialog"
@@ -18,7 +24,9 @@ import VProductForm from "./VProductForm.vue";
 import { useProductStore } from "@/stores/products";
 import { useConfirmationStore } from "@/stores/confirmation";
 import { useToastStore } from "@/stores/toast";
+import { useBreakpointsComposable } from "@/composables/useBreakpoints";
 
+const { isTablet } = useBreakpointsComposable();
 const productStore = useProductStore();
 const confirmationStore = useConfirmationStore();
 const toastStore = useToastStore();

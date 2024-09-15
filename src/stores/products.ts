@@ -27,6 +27,21 @@ export const useProductStore = defineStore('products', {
   }),
 
   actions: {
+    async searchProductsByTitle(this: ProductStoreState, query: string) {
+      this.loading = true
+      this.error = null
+      try {
+        const response: any = await ApiService.get(`/products/?title=${query}`)
+        this.products = response.data
+      } catch (error) {
+        this.error = 'Failed to fetch products'
+      } finally {
+        this.loading = false
+      }
+    },
+    async searchProductsByPrice(this: ProductStoreState, query: number[]) {
+      console.log("🚀 ~ searchProductsByPrice ~ query:", query)
+    },
     async fetchProducts(
       this: ProductStoreState,
       {

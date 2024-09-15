@@ -4,6 +4,7 @@
     rail-width="64"
     permanent
     expand-on-hover
+    floating
     :color="isDark ? 'primary' : 'black'"
   >
     <v-list-item

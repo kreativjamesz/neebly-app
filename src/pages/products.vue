@@ -9,10 +9,17 @@
         <h2>Products</h2>
         <div class="d-flex align-center py-0 ga-2">
           <h5 class="">{{ labelView }}</h5>
-          <v-btn-toggle v-model="isCardView" color="primary" mandatory density="comfortable" >
-            <v-btn icon="mdi-view-list" value="list"></v-btn>
-            <v-btn icon="mdi-view-grid" value="card"></v-btn>
-          </v-btn-toggle>
+          <v-sheet class="toggle-container" color="primary" style="padding: 1px">
+            <v-btn-toggle
+              v-model="computedView"
+              color="primary"
+              mandatory
+              density="comfortable"
+            >
+              <v-btn icon="mdi-view-list" value="list"></v-btn>
+              <v-btn icon="mdi-view-grid" value="card"></v-btn>
+            </v-btn-toggle>
+          </v-sheet>
         </div>
       </v-card-title>
       <v-card-text class="d-flex justify-space-between align-center py-0">
@@ -29,6 +36,9 @@
 <script lang="ts" setup>
 import { useThemeStore } from "@/stores/theme";
 import { storeToRefs } from "pinia";
+import { useBreakpointsComposable } from "@/composables/useBreakpoints";
+
+const { isTablet } = useBreakpointsComposable();
 
 const isCardView = ref("list");
 const themeStore = useThemeStore();
@@ -37,5 +47,18 @@ const { isDark } = storeToRefs(themeStore);
 // Computed
 const labelView = computed(() => {
   return isCardView.value === "list" ? "Table View" : "Card View";
+});
+
+const computedView = computed({
+  get() {
+    return isTablet.value ? "card" : isCardView.value;
+  },
+  set(value) {
+    isCardView.value = value;
+  },
+});
+
+watch(isTablet, () => {
+  isCardView.value = isCardView.value = isTablet.value ? "card" : "list";
 });
 </script>

@@ -19,31 +19,6 @@
         </th>
       </tr>
     </template>
-    <!--
-    <template #body="{ items }">
-      <tr v-for="item in items" :key="item.id" @click="showItem(item)">
-        <td>{{ item?.id || "N/A" }}</td>
-        <td>{{ item?.title || "N/A" }}</td>
-        <td>{{ item?.price || "N/A" }}</td>
-        <td>
-          <v-app-button class="mx-1" icon size="small" @click.stop="showItem(item)">
-            <v-icon size="large">mdi-eye</v-icon>
-          </v-app-button>
-          <v-app-button class="mx-1" icon size="small" @click.stop="editItem(item)">
-            <v-icon size="large"> mdi-pencil </v-icon>
-          </v-app-button>
-          <v-app-button
-            class="mx-1"
-            icon
-            size="small"
-            @click.stop="deleteConfirmation(item.id)"
-          >
-            <v-icon size="large"> mdi-delete </v-icon>
-          </v-app-button>
-        </td>
-      </tr>
-    </template> 
-    -->
     <template #item.actions="{ item }">
       <v-app-button icon size="small" @click.stop="showItem(item)">
         <v-icon size="large">mdi-eye</v-icon>
@@ -74,10 +49,10 @@ import { ref, computed } from "vue";
 import { useProductStore } from "@/stores/products";
 import { useConfirmationStore } from "@/stores/confirmation";
 import { InternalDataTableHeader, Product, ProductTableParams } from "@/types";
-import VProductForm from "./VProductForm.vue";
-import VProductView from "./VProductView.vue";
 import { useToastStore } from "@/stores/toast";
 import { DialogState } from "@/types/dialog";
+import VProductForm from "./VProductForm.vue";
+import VProductView from "./VProductView.vue";
 
 // Variables
 const dialogState = ref("" as DialogState);

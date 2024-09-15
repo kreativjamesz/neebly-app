@@ -13,6 +13,8 @@ export interface Product {
   description: string
   category: Category
   images: string[]
+  creationAt?: string
+  updatedAt?: string
 }
 
 export interface ProductStoreState {
