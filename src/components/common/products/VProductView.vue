@@ -1,23 +1,7 @@
 <template>
   <v-card-text>
     <v-row>
-      <v-col cols="12">
-        <h2>
-          <span class="title text-primary">{{ product.title }}</span>
-        </h2>
-        <span class="price text-black bg-primary rounded-pill px-3 py-1">
-          ${{ product.price }}
-        </span>
-        <v-card-subtitle class="mt-1 px-0 text-primary">{{ product.category.name }}</v-card-subtitle>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        <p class="description">{{ product.description }}</p>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
+      <v-col cols="6">
         <v-marquee>
           <div
             v-if="ifGreaterThenOne"
@@ -48,6 +32,22 @@
           />
         </div>
       </v-col>
+      <v-col cols="6 d-flex justify-start align-start flex-column ga-2">
+        <h2>
+          <span class="title text-primary">{{ product.title }}</span>
+        </h2>
+        <span class="price text-black bg-primary rounded-pill px-3 py-1">
+          ${{ product.price }}
+        </span>
+        <v-card-subtitle class="mt-1 px-0 text-primary">{{
+          product.category.name
+        }}</v-card-subtitle>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" class="pt-0">
+        <p class="description">{{ product.description }}</p>
+      </v-col>
     </v-row>
   </v-card-text>
 </template>
@@ -67,7 +67,10 @@ const ifLessOrEqualToOne = computed(() => product.value.images.length <= 1);
 
 <style scoped lang="scss">
 .price {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
+}
+.v-field--appended {
+  padding-inline-end: 0 !important;
 }
 </style>

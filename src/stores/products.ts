@@ -110,14 +110,10 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
-
-    /** Pagination */
     resetPagination() {
       this.offset = 0
       this.products = []
     },
-    
-    /** Products Form */
     setCreateProductDefaults(defaults: InputCreateProduct) {
       this.createProductForm = defaults;
     },

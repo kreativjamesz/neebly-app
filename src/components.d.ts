@@ -50,5 +50,6 @@ declare module 'vue' {
     VThemeToggle: typeof import('./components/common/VThemeToggle.vue')['default']
     VToast: typeof import('./components/common/VToast.vue')['default']
     VUserMenu: typeof import('./components/common/VUserMenu.vue')['default']
+    VUsersDataTable: typeof import('./components/common/users/VUsersDataTable.vue')['default']
   }
 }

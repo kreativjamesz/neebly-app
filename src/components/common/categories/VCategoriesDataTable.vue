@@ -71,12 +71,10 @@
 </template>
 
 <script setup lang="ts">
-
-
 import { useCategoryStore } from "@/stores/category";
 import { InternalDataTableHeader } from "@/types";
-import { storeToRefs } from "pinia";
 import { useThemeStore } from "@/stores/theme";
+import { storeToRefs } from "pinia";
 
 // Pinia store
 const themeStore = useThemeStore();
@@ -99,4 +97,4 @@ function loadItems() {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-center justify-center">
+  <div class="d-flex align-center justify-center ga-2">
     <v-text-field
       v-model="searchTitle"
       density="compact"
@@ -10,26 +10,21 @@
       hide-details
       single-line
       :min-width="isTablet ? '150px' : '300px'"
-      class="rounded-lg p-relative"
+      class="p-relative rounded-0 ma-0 pa-0"
       style="border: 1px solid #ffcc00 !important"
       @keyup.enter="searchProduct()"
       @input="debouncedSearch"
     >
       <template v-slot:append-inner>
-        <v-btn>
-          <v-icon
-            style="position: absolute; top: 50%; transform: translateY(-50%); right: 0"
-            color="primary"
-            class="pa-5"
-            >mdi-magnify
-          </v-icon>
+        <v-btn class="rounded-0 -mr-5" color="primary" @click="searchProduct()">
+          <v-icon size="large" color="black">mdi-magnify </v-icon>
         </v-btn>
       </template>
     </v-text-field>
 
     <v-menu v-model="otherFilter" :close-on-content-click="false" location="bottom">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" size="small" icon v-bind="props">
+        <v-btn color="primary" v-bind="props" class="rounded-0">
           <v-icon>mdi-filter</v-icon>
         </v-btn>
       </template>
@@ -82,3 +77,7 @@ const searchPrice = useDebounceFn(() => {
 
 defineEmits(["searchTitle"]);
 </script>
+
+<style scoped lang="scss">
+$input-padding: 10px;
+</style>
