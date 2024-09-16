@@ -12,11 +12,16 @@
       :min-width="isTablet ? '150px' : '300px'"
       class="p-relative rounded-0 ma-0 pa-0"
       style="border: 1px solid #ffcc00 !important"
-      @keyup.enter="searchProduct()"
+      @keyup.enter="debouncedSearch"
       @input="debouncedSearch"
     >
       <template v-slot:append-inner>
-        <v-btn class="rounded-0 -mr-5" color="primary" @click="searchProduct()">
+        <v-btn
+          class="rounded-0 -mr-5"
+          color="primary"
+          @click="debouncedSearch"
+          :disabled="searchTitle === ''"
+        >
           <v-icon size="large" color="black">mdi-magnify </v-icon>
         </v-btn>
       </template>
@@ -59,14 +64,13 @@ const searchTitle = ref("");
 const { isTablet } = useBreakpointsComposable();
 const productStore = useProductStore();
 
-const searchProduct = useDebounceFn(() => {
-  productStore.searchProductsByTitle(searchTitle.value);
-}, 500);
-
 const debouncedSearch = useDebounceFn(() => {
-  productStore.searchProductsByTitle(searchTitle.value);
-}, 500);
 
+    if (!!searchTitle.value) productStore.searchProductsByTitle(searchTitle.value);
+    else productStore.fetchProducts({ offset: 0, limit: 10 });
+  },
+  500
+);
 
 defineEmits(["searchTitle"]);
 </script>
