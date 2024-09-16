@@ -90,16 +90,43 @@ Welcome to **NEEBLY**, an e-commerce Content Management System (CMS) that allows
 The **Products** page has filtering and search features to help you manage a large catalog:
 
 1. Use the **Search Bar** at the top to find products by name, SKU, or category.
+
    ![Search Bar](image-9.png)
 
 2. Apply filters using Vuetify's filter components, allowing you to narrow down products by price range, stock status, or category.
-   ![Filter Options](./assets/filter-options-vuetify.png)
+
+   ![Filter Options](image-10.png)
 
 3. The product list updates dynamically based on your search and filter options.
 
 ## Contributing
 
 To contribute to **NEEBLY CMS**, please fork the repository and submit a pull request. Contributions are always welcome, whether you’re improving the UI, adding new features, or fixing bugs.
+
+### Implemented Components
+
+1. VUserMenu - Dropdown Menu for Authenticated Users.
+2. VThemeToggle - Theme Toggling Light & Dark.
+3. VMainToast - Reusable notification component.
+4. VMainNavigationDrawer - CMS Main Navigation Drawer.
+5. VMainNavigationBar - CMS Main Navigation Bar.
+6. VMainConfirmation - CMS Main Confirmation dialog.
+7. VAppButton - Reusable themed Button.
+8. VCategoriesTable - For verifying category exists using a Data Table.
+9. Dialogs compose of reusable dialog components.
+   - VActivatorDialog
+   - VConfirmationDialog
+   - VMainDialog
+   - VModalDialog
+10. Products director compose of component modules for Products.
+   - VAddProduct - Where add product flow starts.
+   - VCategoryFilter - Selection of categories.
+   - VPriceFilter - Filtering price using v-slider component from Vuetify 3.
+   - VProductForm - Add/Edit Product Form component.
+   - VProductsCardList - An optional feature for displaying products using Cards.
+   - VProductsDataTable - Used for display of Products using Data Table Server side component.
+   - VProductView - A display component per Product.
+   - VSearchProduct - Search products using a TextField.
 
 ## License
 
