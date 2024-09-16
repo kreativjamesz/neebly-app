@@ -10,7 +10,6 @@
       variant="outlined"
       density="compact"
       hide-details
-      mandatory
       :items="categories"
     />
     <v-app-button class="mx-4 px-0" color="primary"  @click.stop="searchByCategory">
@@ -24,7 +23,7 @@ import { useCategoryStore } from "@/stores/category";
 import { useProductStore } from "@/stores/products";
 import { useDebounceFn } from "@vueuse/core";
 
-const categoryId = ref(0);
+const categoryId = ref(null);
 const categoryStore = useCategoryStore();
 const categories = computed(() => categoryStore.categories);
 const productStore = useProductStore();
@@ -35,7 +34,7 @@ function loadItems() {
 }
 
 const searchByCategory = useDebounceFn(() => {
-	productStore.searchProductsByCategory(categoryId.value);
+	productStore.searchProductsByCategory(categoryId.value || 0);
 }, 500)
 
 onMounted(() => {

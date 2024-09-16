@@ -5,9 +5,9 @@
     >
     <v-range-slider
       v-model="filterPrice"
-      min="0"
-      max="1000"
-      step="10"
+      min="1"
+      max="100"
+      step="5"
       color="primary"
       hide-details
       show-ticks="always"
@@ -36,7 +36,7 @@
           hide-details
           single-line
         />
-        <v-app-button class="mx-4 px-0" color="primary" size="large" @click.stop="searchPrice">
+        <v-app-button class="mx-4 px-0" color="primary" @click.stop="searchPrice">
           Ok
         </v-app-button>
       </template>
@@ -48,7 +48,7 @@
 import { useProductStore } from "@/stores/products";
 import { useDebounceFn } from "@vueuse/core";
 
-const filterPrice = ref([0, 400]);
+const filterPrice = ref([1, 100]);
 const productStore = useProductStore();
 const searchPrice = useDebounceFn(() => {
   productStore.searchProductsByPrice(filterPrice.value);

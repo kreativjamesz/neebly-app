@@ -241,4 +241,17 @@ const showItem = (item: Product) => {
 .rounded-full {
   border-radius: 9999px;
 }
+
+table > tbody > tr > td:nth-child(3), 
+  table > thead > tr > th:nth-child(3) {
+    position: sticky !important; 
+    position: -webkit-sticky !important; 
+    left: 0; 
+    z-index: 9998;
+  }
+
+  table > thead > tr > th:nth-child(3) {
+    z-index: 9999;
+  }
 </style>
+
