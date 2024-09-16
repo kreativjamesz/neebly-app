@@ -4,6 +4,7 @@ import { InputCreateProduct, InputUpdateProduct, Product, ProductStoreState } fr
 
 export const useProductStore = defineStore('products', {
   state: () => ({
+    allProducts: [] as Product[],
     products: [] as Product[],
     totalItems: 0,
     loading: false,
@@ -27,21 +28,6 @@ export const useProductStore = defineStore('products', {
   }),
 
   actions: {
-    async searchProductsByTitle(this: ProductStoreState, query: string) {
-      this.loading = true
-      this.error = null
-      try {
-        const response: any = await ApiService.get(`/products/?title=${query}`)
-        this.products = response.data
-      } catch (error) {
-        this.error = 'Failed to fetch products'
-      } finally {
-        this.loading = false
-      }
-    },
-    async searchProductsByPrice(this: ProductStoreState, query: number[]) {
-      console.log("🚀 ~ searchProductsByPrice ~ query:", query)
-    },
     async fetchProducts(
       this: ProductStoreState,
       {
@@ -57,8 +43,10 @@ export const useProductStore = defineStore('products', {
           `/products?offset=${offset}&limit=${limit}`,
         )
         if (offset === 0) {
+          this.allProducts = response.data
           this.products = response.data
         } else {
+          this.allProducts = [...this.allProducts, ...response.data]
           this.products = [...this.products, ...response.data]
         }
         this.totalItems = response.total || 100
@@ -69,6 +57,52 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
+    // Server-side filtering by title
+    async searchProductsByTitle(this: ProductStoreState, query: string) {
+      this.loading = true
+      this.error = null
+      try {
+        const response: any = await ApiService.get(`/products/?title=${query}`)
+        this.products = response.data
+      } catch (error) {
+        this.error = 'Failed to fetch products'
+      } finally {
+        this.loading = false
+      }
+    },
+
+     // Client-side filtering by title
+     filterProductsByTitle(this: ProductStoreState, query: string) {
+      this.products = this.allProducts.filter((product) =>
+        product.title.toLowerCase().includes(query.toLowerCase())
+      )
+    },
+    async searchProductsByPrice(this: ProductStoreState, query: number[]) {
+      this.loading = true
+      this.error = null
+      try {
+        // ?price_min=900&price_max=1000
+        const response: any = await ApiService.get(`/products/?price_min=${query[0]}&price_max=${query[1]}`)
+        this.products = response.data
+      } catch (error) {
+        this.error = 'Failed to fetch products'
+      } finally {
+        this.loading = false
+      }
+    },
+    async searchProductsByCategory(this: ProductStoreState, query: number) {
+      this.loading = true
+      this.error = null
+      try {
+        const response: any = await ApiService.get(`/products/?categoryId=${query}`)
+        this.products = response.data
+      } catch (error) {
+        this.error = 'Failed to fetch products'
+      } finally {
+        this.loading = false
+      }
+    },
+    
     async createProduct(this: ProductStoreState) {
       this.loading = true
       this.error = null

@@ -1,6 +1,14 @@
 <template>
-  <div :style="{ display: 'flex', gap: '20px', flexWrap: 'wrap' }">
-    <div v-for="product in products" :key="product.id">
+  <v-row>
+    <v-col
+      cols="4"
+      lg="3"
+      md="4"
+      sm="6"
+      v-for="product in products"
+      :key="product.id"
+      class="tw-w-full"
+    >
       <v-card
         color="grey-lighten-4"
         class="product-card rounded-0"
@@ -21,13 +29,22 @@
           <v-card-title class="contain">{{ product?.title }}</v-card-title>
           <v-card-subtitle class="contain">{{ product?.category?.name }}</v-card-subtitle>
           <v-card-text class="contain">
-            <p>{{ product.description }}</p>
+            <p>
+              {{ truncatedText(product.description) }}
+              <span v-if="isExpanded">{{ remainingText(product.description) }}</span>
+              <a
+                class="text-primary hover:underline focus:outline-none"
+                @click="toggleText"
+              >
+                {{ isExpanded ? "Read Less" : "Read More" }}
+              </a>
+            </p>
             <p class="text-h6 text-primary">$ {{ product.price }}</p>
           </v-card-text>
         </div>
       </v-card>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">
@@ -37,28 +54,38 @@ import { storeToRefs } from "pinia";
 const themeStore = useThemeStore();
 const productStore = useProductStore();
 const { isDark } = storeToRefs(themeStore);
+const isExpanded = ref(false);
+const limit = ref(100);
 
 // Computed
 const products = computed(() => productStore.products);
 
 // Methods
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+const toggleText = () => {
+  isExpanded.value = !isExpanded.value;
 };
 
-// Created a method that detects whether a product is new or not within this week.
-// This is to make it easier to filter out products that are not new.
+const truncatedText = (text: string) => {
+  return text.length > limit.value ? text.slice(0, limit.value) : text;
+};
+
+const remainingText = (text: string) => {
+  return text.length > limit.value ? text.slice(limit.value) : "";
+};
+
 const isNew = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();
   const diffTime = Math.abs(now.getTime() - date.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays <= 7;
+};
+const truncateText = (text: string, length: number) => {
+  if (text.length > length) {
+    return text.slice(0, length) + "...";
+  } else {
+    return text;
+  }
 };
 </script>
 
@@ -79,7 +106,7 @@ const isNew = (dateString: string) => {
   object-position: center;
   margin: 2px 2px 0 2px;
   width: 100%;
-  height: 400px;
+  height: auto;
 
   background-position: center;
   background-size: contain;

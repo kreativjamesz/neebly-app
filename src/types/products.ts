@@ -18,6 +18,7 @@ export interface Product {
 }
 
 export interface ProductStoreState {
+  allProducts: Product[]
   products: Product[]
   totalItems: number
   loading: boolean

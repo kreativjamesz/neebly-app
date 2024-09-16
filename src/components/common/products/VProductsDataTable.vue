@@ -10,7 +10,6 @@
     :items-length="totalItems"
     :loading="loading"
     @update:options="loadItems"
-    @click:row="handleRowClick"
   >
     <template #headers>
       <tr>
@@ -133,7 +132,6 @@ function loadItems({ page, itemsPerPage }: ProductTableParams) {
  *
  **/
 function deleteItem(id: Product["id"]) {
-  console.log("Confirmed!");
   productStore.deleteProduct(id);
 }
 const deleteConfirmation = (id: Product["id"]) => {
@@ -147,7 +145,6 @@ const deleteConfirmation = (id: Product["id"]) => {
       confirmationStore.closeConfirmation();
     },
     cancel: () => {
-      console.log("Cancelled!");
       confirmationStore.closeConfirmation();
     },
   });
@@ -238,9 +235,6 @@ const showItem = (item: Product) => {
   showDialog.value = true;
 };
 
-const handleRowClick = (row: any) => {
-  console.log(row.value);
-};
 </script>
 
 <style lang="scss" scoped>

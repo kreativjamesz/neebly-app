@@ -10,7 +10,6 @@ export const useAppStore = defineStore('app', {
       this.isRail = !this.isRail
     },
     setIsRail(value: boolean) {
-      console.log("🚀 ~ setIsRail ~ value:", value)
       set(this, 'isRail', value)
     }
   },

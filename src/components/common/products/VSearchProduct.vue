@@ -22,32 +22,29 @@
       </template>
     </v-text-field>
 
-    <v-menu v-model="otherFilter" :close-on-content-click="false" location="bottom">
+    <v-menu
+      v-model="otherFilter"
+      :close-on-content-click="false"
+      location="bottom"
+      class="w-100 px-0"
+    >
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props" class="rounded-0">
-          <v-icon>mdi-filter</v-icon>
-        </v-btn>
+        <div class="tw-border-2 tw-border-yellow-400">
+          <v-btn color="primary" v-bind="props" class="rounded-0 px-0">
+            <v-icon>mdi-filter</v-icon>
+            <v-icon size="large">mdi-chevron-down</v-icon>
+          </v-btn>
+        </div>
       </template>
-      <v-card>
-        <v-card-title>Filters</v-card-title>
-        <v-card-text>
-          <v-range-slider
-            v-model="searchPriceRange"
-            min="0"
-            max="1000"
-            step="10"
-            label="Price Range"
-            color="primary"
-            hide-details
-            show-ticks="always"
-            tick-size="4"
-            width="200"
-            @input="searchPrice"
-            @change="searchPrice"
-          >
-          </v-range-slider>
-        </v-card-text>
-      </v-card>
+      <div class="tw-border-2 tw-border-yellow-400">
+        <v-card width="550">
+          <v-card-title>Filter by:</v-card-title>
+          <v-card-text class="d-flex flex-column ga-5">
+            <v-price-filter />
+            <v-category-filter />
+          </v-card-text>
+        </v-card>
+      </div>
     </v-menu>
   </div>
 </template>
@@ -59,7 +56,6 @@ import { useDebounceFn } from "@vueuse/core";
 
 const otherFilter = ref(false);
 const searchTitle = ref("");
-const searchPriceRange = ref([0, 1000]);
 const { isTablet } = useBreakpointsComposable();
 const productStore = useProductStore();
 
@@ -71,9 +67,6 @@ const debouncedSearch = useDebounceFn(() => {
   productStore.searchProductsByTitle(searchTitle.value);
 }, 500);
 
-const searchPrice = useDebounceFn(() => {
-  productStore.searchProductsByPrice(searchPriceRange.value);
-}, 500);
 
 defineEmits(["searchTitle"]);
 </script>

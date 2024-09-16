@@ -36,7 +36,6 @@ const showDialog = ref(false);
  * Create Product...
  */
 const onConfirm = () => {
-  console.log("Confirmed!");
   productStore.createProduct();
   productStore.resetCreateProductForm();
 };
@@ -53,7 +52,6 @@ const showSaveConfirmation = () => {
       showSuccessToast();
     },
     cancel: () => {
-      console.log("Cancelled!");
       confirmationStore.closeConfirmation();
     },
   });
